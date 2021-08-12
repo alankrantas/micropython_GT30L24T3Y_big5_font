@@ -2,7 +2,7 @@
 
 ![IMG_0001](https://user-images.githubusercontent.com/44191076/129242480-861ec0a6-f84e-44bd-9a00-d1b0b5d3048f.JPG)
 
-GT30L24T3Y/ER3303-1 是高通 (Genitop) 生產的[眾多字庫晶片](http://www.mitsutech.com.tw/vision_T/product_genitop0.htm)之一，如今還可以買到，但似乎沒有人真的懂要怎麼操作它，原始文件也寫得不是很清楚。花了一番功夫，總算搞懂是怎麼運作的了。
+GT30L24T3Y/ER3303-1 是高通 (Genitop，不是那個 Qualcomm) 生產的[眾多字庫晶片](http://www.mitsutech.com.tw/vision_T/product_genitop0.htm)之一，如今還可以買到，但似乎沒有人真的懂要怎麼操作它，原始文件也寫得不是很清楚。花了一番功夫，總算搞懂是怎麼運作的了。
 
 ![0117021043](https://user-images.githubusercontent.com/44191076/129241611-219bcaa0-8109-4579-b90f-2b75e650b112.jpg)
 
