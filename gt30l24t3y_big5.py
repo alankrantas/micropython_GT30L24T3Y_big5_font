@@ -8,7 +8,7 @@ def getBig5Font(spi, cs, font_code, font_size, raw=False, printout=False):
     elif isinstance(font_code, int):
         msb, lsb = font_code >> 8, font_code & 0xff
     else:
-        raise ValueError('font_code has to be str (ex. \'b64c\') or int (ex. 0xa140)')
+        raise ValueError('font_code has to be str (ex. \'A140\') or int (ex. 0xa140)')
     
     if font_size == 12:
         base_addr = 0x0000
