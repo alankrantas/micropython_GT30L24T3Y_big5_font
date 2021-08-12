@@ -52,7 +52,7 @@ def getBig5Font(spi, cs, font_code, font_size, raw=False, printout=False):
         for i in range((buf_size - font_size), buf_size):
             line = []
             for j in range(buf_size // font_size):
-                line.append('{:08b}'.format(buf[i - j * font_size]).replace('0', ' ').replace('1', '#'))
+                line.append('{:08b}'.format(buf[i - j * font_size]).replace('0', '-').replace('1', '#'))
             print(''.join(line))
                 
     if raw:
@@ -109,3 +109,5 @@ if __name__ == '__main__':
         pos += 24
     
     display.show()
+    
+    getBig5Font(spi, cs, data['月'], 24, printout=True)
