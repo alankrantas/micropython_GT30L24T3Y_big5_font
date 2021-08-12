@@ -34,6 +34,8 @@ getBig5Font(spi, cs, font_code, font_size, raw=False, printout=False)
 | raw | 設為 True 時直接傳回 bytes 陣列, 否則預設傳回 framebuf.FrameBuffer |
 | printout | 設為 True 時會在 REPL 印出該字的文字圖檔 |
 
+傳入不正確的引數會使它拋出錯誤。
+
 預設下 getBig5Font 會傳回 MicroPython 的 framebuf.FrameBuffer 物件，讓你能把它直接貼在某些顯示器模組上。據我所知 [SSD1306 OLED](https://github.com/stlehmann/micropython-ssd1306) 及 [PCD8544/Nokia 5110 LCD](https://github.com/mcauser/micropython-pcd8544) 的驅動程式都支援 FrameBuffer。
 
 ## BIG-5 字體
@@ -41,6 +43,8 @@ getBig5Font(spi, cs, font_code, font_size, raw=False, printout=False)
 GT30L24T3Y 支援 GB、BIG-5 和 Unicode 三種中文字，以及幾種 ASCII 英數字形。目前我只實作 BIG-5。Unicode 字庫似乎跟 BIG-5 是共用的，只不過是改成讓你用 Unicode 字碼來查詢而已，但我並不清楚此晶片使用的 Unicode 編碼順序 (用 ```ord()``` 取得的字碼跟晶片用的似乎不同)。
 
 GT30L24T3Y 將字庫的順序一併存在晶片中，所以查詢時其實會有兩次 SPI 讀寫，第一次是用字碼表的順序去查字在晶片裡的 offset 位置，第二次才是把字讀出來。問題就在於，這個已經有點歷史的晶片的 BIG-5 字碼和你在現代軟體得到的結果 (包括用正規 Python 的 ```codecs.encode()```) 會有出入，有很多後面的非中文字並不存在於晶片中，所以還是乖乖用舊的字碼表吧。
+
+另外就文件的說法，24x24 字體只支援基本中文字，所以字碼不能超過 E1BC。
 
 ## 測試
 
