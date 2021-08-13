@@ -2,7 +2,7 @@
 
 ![IMG_0001](https://user-images.githubusercontent.com/44191076/129242480-861ec0a6-f84e-44bd-9a00-d1b0b5d3048f.JPG)
 
-GT30L24T3Y/ER3303-1 是高通 (Genitop，不是那個 Qualcomm) 生產的[眾多字庫晶片](http://www.mitsutech.com.tw/vision_T/product_genitop0.htm)之一，如今還可以買到，但網路上找不到什麼操作範例，原始文件也寫得不是很清楚。花了一番功夫，總算搞懂是怎麼運作的了。
+GT30L24T3Y 又名 ER3303-1 是高通 (Genitop，不是那個 Qualcomm) 生產的[眾多字庫晶片](http://www.mitsutech.com.tw/vision_T/product_genitop0.htm)之一，如今還可以買到，但網路上找不到什麼操作範例，原始文件也寫得不是很清楚。花了一番功夫，總算搞懂是怎麼運作的了。
 
 ![0117021043](https://user-images.githubusercontent.com/44191076/129241611-219bcaa0-8109-4579-b90f-2b75e650b112.jpg)
 
@@ -23,17 +23,17 @@ getBig5Font(spi, cs, font_code, font_size, raw=False, printout=False)
 | raw | 設為 True 時直接傳回 bytes 陣列, 否則預設傳回 framebuf.FrameBuffer |
 | printout | 設為 True 時會在 REPL 印出該字的文字圖檔 |
 
-傳入不正確的引數會使它拋出錯誤。SPI 物件的 baudrate 須設為  40 MHz；儘管官方文件指出 GT30L24T3Y 通訊速度可達 80 MHz，但測試上無法穩定運作。
+傳入不正確的 font_code 或 font_size 引數會使它拋出錯誤。SPI 物件的最高 baudrate 只能設為  40 MHz；儘管官方文件指出 GT30L24T3Y 通訊速度可達 80 MHz，但測試上無法這樣穩定運作。
 
-預設下此函式會傳回 MicroPython 的 framebuf.FrameBuffer 物件，讓你能把它直接貼在某些顯示器模組上。據我所知 [SSD1306 OLED](https://github.com/stlehmann/micropython-ssd1306) 及 [PCD8544/Nokia 5110 LCD](https://github.com/mcauser/micropython-pcd8544) 的驅動程式都能使用 FrameBuffer。
+預設下此函式會傳回 MicroPython 的 [FrameBuffer](https://docs.micropython.org/en/latest/library/framebuf.html) 物件，讓你能把它直接貼在某些顯示器模組上。據我所知 [SSD1306 OLED](https://github.com/stlehmann/micropython-ssd1306) 及 [PCD8544/Nokia 5110 LCD](https://github.com/mcauser/micropython-pcd8544) 的驅動程式都會使用 FrameBuffer。
 
 ## BIG-5 字體
 
-GT30L24T3Y 支援 GB、BIG-5 和 Unicode 三種中文字，以及幾種 ASCII 英數字形。目前我只實作 BIG-5。MicroPython 本身已經提供 8x8 英數字體，所以 ASCII 的部分儘管查詢更簡單，感覺卻沒有那麼有需要。
+GT30L24T3Y 支援 GB、BIG-5 和 Unicode 三種中文字，以及幾種 ASCII 英數字形。目前我只實作 BIG-5。MicroPython 本身已經提供 8x8 英數字體，BIG-5 本身也有數字和符號等等，所以 ASCII 的部分儘管查詢上更簡單，在此仍比較沒有使用的需要。
 
-GT30L24T3Y 將字庫的索引資料一併存在晶片中，所以查詢時其實要做兩次 SPI 讀寫，第一次是用字在字碼表的排列順序去查它在晶片裡的 offset 位置，第二次才是把字讀出來。問題就在於，這個已經有點歷史的晶片的 BIG-5 字碼和你在現代軟體得到的結果 (包括用正規 Python 的 ```codecs.encode()```) 會有出入，有很多後面的非中文字並不存在於晶片中，所以還是乖乖用舊的字碼表吧。
+GT30L24T3Y 將漢字字庫的索引資料一併存在晶片中，所以查詢時其實要做兩次 SPI 讀寫，第一次是用某字在字碼表的排列順序去查它在晶片裡的 offset，第二次才是把字讀出來。問題就在於，這個已經有點歷史的晶片的 BIG-5 字碼和你在現代軟體得到的結果 (包括用正規 Python 的 ```codecs.encode()```) 會有出入，有很多後面的非中文字並不存在於晶片中，所以還是乖乖用舊的字碼表吧。
 
-晶片上的 BIG-5 字體有 12x12、16x16 及 24x24 像素三種尺寸 (正確來說是 11x12，15x16 與 24x24)。有趣的是 Unicode 字庫似乎跟 BIG-5 是共用的，只不過是改成讓你用 Unicode 字碼來查詢而已，但我並不清楚此晶片使用的 Unicode 編碼順序 (用 ```ord()``` 取得的字碼跟晶片用的似乎不同)。另外就文件的說法，24x24 字體只支援基本中文字，所以字碼不能超過 E1BC。
+可用的 BIG-5 字體有 12x12、16x16 及 24x24 像素三種尺寸 (正確來說是 11x12，15x16 與 24x24)。有趣的是 Unicode 字庫似乎跟 BIG-5 是共用的，只不過是改成讓你用 Unicode 字碼來查詢而已，但我並不清楚此晶片使用的 Unicode 編碼順序 (用 ```ord()``` 取得的字碼跟晶片用的似乎不太一樣)。另外就文件的說法，24x24 字體只支援基本中文字，所以字碼不能超過 E1BC。
 
 ## 測試
 
