@@ -27,7 +27,7 @@ getBig5Font(spi, cs, font_code, font_size, raw=False, printout=False)
 
 預設下此函式會傳回 MicroPython 的 [FrameBuffer](https://docs.micropython.org/en/latest/library/framebuf.html) 物件，讓你能把它直接貼在某些顯示器模組上。據我所知 [SSD1306 OLED](https://github.com/stlehmann/micropython-ssd1306) 及 [PCD8544/Nokia 5110 LCD](https://github.com/mcauser/micropython-pcd8544) 的驅動程式都會使用 FrameBuffer。
 
-如果你要使用純 bytes 陣列，[ER3303-1 手冊](https://github.com/alankrantas/micropython_GT30L24T3Y_big5_font/blob/main/ER3303-1_Datasheet.pdf)的 12-13 頁有字形資料的結構說明。
+如果你要使用純 bytes 陣列，[ER3303-1 手冊](https://github.com/alankrantas/micropython_GT30L24T3Y_big5_font/blob/main/ER3303-1_Datasheet.pdf)的 12-13 頁有說明字型資料是如何排列的。
 
 ## BIG-5 字體
 
