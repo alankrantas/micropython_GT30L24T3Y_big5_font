@@ -1,4 +1,7 @@
 def getBig5Font(spi, cs, font_code, font_size, raw=False, printout=False):
+    """
+    For reading BIG-5 Chinese fonts from GT30L24T3Y/ER3303-1 SPI module.
+    """
     
     def cmd(address):
         return bytes([0x0b, address >> 16, address >> 8 & 0xff, address & 0xff, 0xff])
