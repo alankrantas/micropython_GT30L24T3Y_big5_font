@@ -18,7 +18,7 @@ getBig5Font(spi, cs, font_code, font_size, raw=False, printout=False)
 | --- | --- |
 | spi | SPI 物件 (machine.SPI 或 machine.SoftSPI) |
 | cs | CS 腳位物件 (machine.Pin) |
-| font_code | BIG-5 字碼 (字串或數值, 如 'A140' 或 0xA140, 參閱[字碼表](http://www.mitsutech.com.tw/vision_T/product_genitop0.htm)) |
+| font_code | BIG-5 字碼 (字串或數值, 如 'A140' 或 0xA140, 參閱[字碼表](http://web.tnu.edu.tw/me/study/moodle/tutor/vb6/tutor/r05/index.htm)) |
 | font_size | BIG-5 字體大小 (12, 16 或 24) |
 | raw | 設為 True 時直接傳回 bytes 陣列, 否則預設傳回 framebuf.FrameBuffer |
 | printout | 設為 True 時會在 REPL 印出該字的文字圖檔 |
