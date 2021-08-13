@@ -6,15 +6,6 @@ GT30L24T3Y/ER3303-1 是高通 (Genitop，不是那個 Qualcomm) 生產的[眾多
 
 ![0117021043](https://user-images.githubusercontent.com/44191076/129241611-219bcaa0-8109-4579-b90f-2b75e650b112.jpg)
 
-| 腳位 | 意義 |
-| --- | --- |
-| GND | GND |
-| 3.3-5V | 3.3V 或 5V |
-| CS | CS (chip select) |
-| SI | MOSI/SPI Tx |
-| SO | MISO/SPI Rx |
-| SCK | SCK |
-
 儘管官方文件指出 GT30L24T3Y 通訊速度可達 80 MHz，但在此測試只能在 40 MHz 穩定運作。
 
 ## 使用
@@ -49,6 +40,17 @@ GT30L24T3Y 將字庫的順序資料一併存在晶片中，所以查詢時其實
 ## 測試
 
 我在圖中用的是 Raspberry Pi Pico 與 SSD1306，但這應該也適用於 ESP8266/ESP32。我用的 MicroPython 版本為 v1.16。
+
+![1](https://user-images.githubusercontent.com/44191076/129292442-1f8f4ce8-6ff3-4abf-b93d-7ad05be40aaa.png)
+
+| 腳位 | 接線 |
+| --- | --- |
+| GND | GND |
+| 3.3-5V | 3.3V |
+| CS | GPIO 17 |
+| SI (MOSI) | GPIO 19 |
+| SO (MISO) | GPIO 16 |
+| SCK | GPIO 18 |
 
 你可以先查詢你要使用的字，並建一個 Python 字典當對照表。不過在連續印出文字時，由於 MicroPython 是基於 Python 3.4，字典內容不會照元素的存入順序排列，所以你仍得用另外的方式 (比如一個串列) 來走訪之。
 
