@@ -1,10 +1,10 @@
-def getBig5Font(spi, cs, font_code, font_size, raw=False, printout=False):
+def getBig5Font(spi, cs, font_code, font_size=12, raw=False, printout=False):
     """
     For reading BIG-5 Chinese fonts from GT30L24T3Y/ER3303-1 SPI module.
     """
     
     def cmd(address):
-        return bytes([0x0b, address >> 16, address >> 8 & 0xff, address & 0xff, 0xff])
+        return bytes([0x0b, address >> 16 & 0xff, address >> 8 & 0xff, address & 0xff, 0xff])
 
     if isinstance(font_code, str) and len(font_code) == 4:
         msb, lsb = int(font_code[:2], 16), int(font_code[2:], 16)
@@ -44,7 +44,7 @@ def getBig5Font(spi, cs, font_code, font_size, raw=False, printout=False):
     buf = spi.read(2)
     cs.on()
     
-    address = buf[0] * 256 + buf[1]
+    address = buf[0] << 8 | buf[1]
     
     cs.off()
     spi.write(cmd(base_addr + address * buf_size))
@@ -85,32 +85,11 @@ if __name__ == '__main__':
         '你': 'A741',
         }
     
-    text = '我要代替月亮懲罰你'
-
     from machine import Pin, I2C, SPI
-    from ssd1306 import SSD1306_I2C
+    from ssd1306 import SSD1306_I2C  # https://github.com/stlehmann/micropython-ssd1306
 
     spi = SPI(0, baudrate=40000000, sck=Pin(18), mosi=Pin(19), miso=Pin(16))
     cs = Pin(17, Pin.OUT, value=1)
     
-    display = SSD1306_I2C(128, 64, I2C(1, scl=Pin(27), sda=Pin(26)))
-    display.fill(0)
-    
-    pos = 0
-    for t in text:
-        display.blit(getBig5Font(spi, cs, data[t], 12), pos, 0)
-        pos += 12
-    
-    pos = 0
-    for t in text:
-        display.blit(getBig5Font(spi, cs, data[t], 16), pos, 18)
-        pos += 16
-        
-    pos = 0
-    for t in text:
-        display.blit(getBig5Font(spi, cs, data[t], 24), pos, 40)
-        pos += 24
-    
-    display.show()
-    
-    getBig5Font(spi, cs, data['月'], 24, printout=True)
+    buf = getBig5Font(spi, cs, data['月'], font_size=24, raw=True, printout=True)
+    print(buf)
