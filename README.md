@@ -66,6 +66,8 @@ SSD1306 接線 (使用 I2C1 硬體腳位)：
 下面的範例會用不同大小印出一連串文字。你可以先在字碼表查詢你要使用的字，並建一個 Python 字典當對照表。不過由於 MicroPython 是基於 Python 3.4，走訪字典內容時不會照元素的存入順序印出，所以你仍得用另外的方式 (比如一個串列) 來走訪。
 
 ```python
+    # 前面貼上 getBig5Font() 函式
+
     # 字碼對照表    
     data = {
         '我': 'A7DA',
@@ -93,25 +95,26 @@ SSD1306 接線 (使用 I2C1 硬體腳位)：
     
     pos = 0
     for t in text:
-        display.blit(getBig5Font(spi, cs, data[t], 12), pos, 0)  # 印上文字
+        display.blit(getBig5Font(spi, cs, data[t], font_size=12), pos, 0)  # 印上文字
         pos += 12
     
     pos = 0
     for t in text:
-        display.blit(getBig5Font(spi, cs, data[t], 16), pos, 18)
+        display.blit(getBig5Font(spi, cs, data[t], font_size=16), pos, 18)
         pos += 16
         
     pos = 0
     for t in text:
-        display.blit(getBig5Font(spi, cs, data[t], 24), pos, 40)
+        display.blit(getBig5Font(spi, cs, data[t], font_size=24), pos, 40)
         pos += 24
     
     display.show()  # 顯示文字
     
-    getBig5Font(spi, cs, data['月'], 24, printout=True)
+    buf = getBig5Font(spi, cs, data['月'], font_size=24, raw=True, printout=True)
+    print(buf)
 ```
 
-最後一行會在主控台印出
+最後兩行會在主控台印出
 
 ```
 ------------------------
@@ -138,5 +141,5 @@ SSD1306 接線 (使用 I2C1 硬體腳位)：
 ------------------------
 ------------------------
 ------------------------
-                        
+b'\x00\x00\x00\x00\x00\x00\x00\xfe\xfc\x84\x84\x84\x84\x84\x84\x84\x84\xfe\xfe\x04\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\xff\xff        \xff\xff\x00\x00\x00\x00\x00\x00\x00\x00\x80@`8\x1f\x07\x00\x00\x00\x00\x00  \xe0\x7f?\x00\x00\x00\x00\x00'
 ```
